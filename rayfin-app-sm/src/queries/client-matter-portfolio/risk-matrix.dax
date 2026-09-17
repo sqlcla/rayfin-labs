@@ -1,0 +1,22 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+SELECTCOLUMNS(
+    SUMMARIZECOLUMNS(
+        'client'[risk_rating],
+        'matter'[risk_level],
+        _AttorneyMatterFilter,
+        _ClientFilter,
+        "MatterCount", DISTINCTCOUNT('matter'[matter_key]),
+        "BilledValue", [Billed Value],
+        "OutstandingAmount", SUM('invoice'[outstanding_amount])
+    ),
+    "ClientRiskRating", 'client'[risk_rating],
+    "MatterRiskLevel", 'matter'[risk_level],
+    "MatterCount", [MatterCount],
+    "BilledValue", [BilledValue],
+    "OutstandingAmount", [OutstandingAmount]
+)
+ORDER BY [ClientRiskRating], [MatterRiskLevel]

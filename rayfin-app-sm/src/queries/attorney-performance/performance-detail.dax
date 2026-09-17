@@ -1,0 +1,30 @@
+DEFINE
+    VAR _AttorneyFilter = ALL('attorney'[attorney_name]) /*__ATTORNEY_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Rows =
+        CALCULATETABLE(
+            TOPN(
+                250,
+                'time_entry',
+                'time_entry'[work_date], DESC,
+                'time_entry'[time_entry_id], ASC
+            ),
+            _AttorneyFilter,
+            _ClientFilter
+        )
+
+EVALUATE
+SELECTCOLUMNS(
+    _Rows,
+    "TimeEntryId", 'time_entry'[time_entry_id],
+    "WorkDate", 'time_entry'[work_date],
+    "AttorneyName", RELATED('attorney'[attorney_name]),
+    "ClientName", RELATED('client'[client_name]),
+    "MatterName", RELATED('matter'[matter_name]),
+    "TaskCode", 'time_entry'[task_code],
+    "HoursWorked", 'time_entry'[hours_worked],
+    "BillRate", 'time_entry'[bill_rate],
+    "BilledAmount", 'time_entry'[billed_amount],
+    "Narrative", 'time_entry'[narrative]
+)
+ORDER BY [WorkDate] DESC, [TimeEntryId]

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Matter status and practice area mix.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "x": { "field": "MatterCount", "type": "quantitative", "title": "Number of matters" },
+    "y": { "field": "PracticeArea", "type": "nominal", "title": "Practice area" },
+    "color": { "field": "MatterStatus", "type": "nominal", "title": "Matter status" },
+    "tooltip": [
+      { "field": "MatterCount", "type": "quantitative", "title": "Matters", "format": ",.0f" },
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" }
+    ]
+  }
+}

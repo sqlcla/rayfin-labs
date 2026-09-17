@@ -1,0 +1,32 @@
+DEFINE
+    VAR _AttorneyFilter = ALL('attorney'[attorney_name]) /*__ATTORNEY_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Core =
+        SUMMARIZECOLUMNS(
+            'attorney'[attorney_name],
+            'attorney'[practice_area_name],
+            _AttorneyFilter,
+            _ClientFilter,
+            "BilledValue", [Billed Value],
+            "TotalHours", [Total Hours],
+            "UtilizationPercent", [Utilization %],
+            "EffectiveBillRate", [Effective Bill Rate]
+        )
+
+EVALUATE
+SELECTCOLUMNS(
+    ADDCOLUMNS(
+        _Core,
+        "BilledRank", RANKX(_Core, [BilledValue],, DESC, DENSE),
+        "HoursRank", RANKX(_Core, [TotalHours],, DESC, DENSE)
+    ),
+    "AttorneyName", 'attorney'[attorney_name],
+    "PracticeArea", 'attorney'[practice_area_name],
+    "BilledRank", [BilledRank],
+    "HoursRank", [HoursRank],
+    "BilledValue", [BilledValue],
+    "TotalHours", [TotalHours],
+    "UtilizationPercent", [UtilizationPercent],
+    "EffectiveBillRate", [EffectiveBillRate]
+)
+ORDER BY [BilledRank], [AttorneyName]

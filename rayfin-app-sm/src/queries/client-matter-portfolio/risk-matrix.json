@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Client and matter risk matrix.",
+  "width": "container",
+  "height": "container",
+  "mark": "rect",
+  "encoding": {
+    "x": { "field": "ClientRiskRating", "type": "ordinal", "title": "Client risk rating" },
+    "y": { "field": "MatterRiskLevel", "type": "ordinal", "title": "Matter risk level" },
+    "color": { "field": "MatterCount", "type": "quantitative", "title": "Number of matters" },
+    "tooltip": [
+      { "field": "MatterCount", "type": "quantitative", "title": "Matters", "format": ",.0f" },
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" },
+      { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount", "format": "$,.0f" }
+    ]
+  }
+}

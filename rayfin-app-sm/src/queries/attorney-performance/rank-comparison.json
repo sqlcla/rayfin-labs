@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Attorney billed-value and hours rank comparison.",
+  "width": "container",
+  "height": "container",
+  "mark": { "type": "circle", "size": 120 },
+  "encoding": {
+    "x": { "field": "BilledRank", "type": "quantitative", "title": "Billed value rank" },
+    "y": { "field": "HoursRank", "type": "quantitative", "title": "Hours rank" },
+    "color": { "field": "PracticeArea", "type": "nominal", "title": "Practice area" },
+    "tooltip": [
+      { "field": "AttorneyName", "type": "nominal", "title": "Attorney" },
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" },
+      { "field": "TotalHours", "type": "quantitative", "title": "Total hours", "format": ",.0f" }
+    ]
+  }
+}

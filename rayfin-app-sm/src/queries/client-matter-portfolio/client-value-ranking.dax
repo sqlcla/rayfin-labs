@@ -1,0 +1,33 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Core =
+        SUMMARIZECOLUMNS(
+            'client'[client_name],
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            "BilledValue", [Billed Value],
+            "InvoicedAmount", SUM('invoice'[total_amount]),
+            "OutstandingAmount", SUM('invoice'[outstanding_amount]),
+            "MatterCount", DISTINCTCOUNT('matter'[matter_key])
+        )
+
+EVALUATE
+TOPN(
+    25,
+    SELECTCOLUMNS(
+        ADDCOLUMNS(
+            _Core,
+            "ClientRank", RANKX(_Core, [BilledValue],, DESC, DENSE)
+        ),
+        "ClientName", 'client'[client_name],
+        "ClientRank", [ClientRank],
+        "BilledValue", [BilledValue],
+        "InvoicedAmount", [InvoicedAmount],
+        "OutstandingAmount", [OutstandingAmount],
+        "MatterCount", [MatterCount]
+    ),
+    [BilledValue], DESC,
+    [ClientName], ASC
+)
+ORDER BY [ClientRank], [ClientName]

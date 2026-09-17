@@ -1,0 +1,41 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+TOPN(
+    250,
+    SELECTCOLUMNS(
+        SUMMARIZECOLUMNS(
+            'invoice'[invoice_id],
+            'invoice'[invoice_date],
+            'invoice'[invoice_status],
+            'matter'[matter_id],
+            'matter'[matter_name],
+            'client'[client_name],
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            "FeesAmount", SUM('invoice'[fees_amount]),
+            "ExpenseAmount", SUM('invoice'[expense_amount]),
+            "TaxAmount", SUM('invoice'[tax_amount]),
+            "InvoicedAmount", SUM('invoice'[total_amount]),
+            "PaidAmount", SUM('invoice'[paid_amount]),
+            "OutstandingAmount", SUM('invoice'[outstanding_amount])
+        ),
+        "InvoiceId", 'invoice'[invoice_id],
+        "InvoiceDate", 'invoice'[invoice_date],
+        "InvoiceStatus", 'invoice'[invoice_status],
+        "MatterId", 'matter'[matter_id],
+        "MatterName", 'matter'[matter_name],
+        "ClientName", 'client'[client_name],
+        "FeesAmount", [FeesAmount],
+        "ExpenseAmount", [ExpenseAmount],
+        "TaxAmount", [TaxAmount],
+        "InvoicedAmount", [InvoicedAmount],
+        "PaidAmount", [PaidAmount],
+        "OutstandingAmount", [OutstandingAmount]
+    ),
+    [InvoiceDate], DESC,
+    [InvoiceId], ASC
+)
+ORDER BY [InvoiceDate] DESC, [InvoiceId]

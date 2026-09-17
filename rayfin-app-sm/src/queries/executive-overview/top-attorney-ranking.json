@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Top attorneys ranked by billed value.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "y": { "field": "AttorneyName", "type": "nominal", "title": "Attorney", "sort": "-x" },
+    "x": { "field": "BilledValue", "type": "quantitative", "title": "Billed value (dollars)", "axis": { "format": "$,.0f" } },
+    "tooltip": [
+      { "field": "AttorneyRank", "type": "quantitative", "title": "Rank" },
+      { "field": "AttorneyName", "type": "nominal", "title": "Attorney" },
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" },
+      { "field": "TotalHours", "type": "quantitative", "title": "Total hours", "format": ",.0f" }
+    ]
+  }
+}

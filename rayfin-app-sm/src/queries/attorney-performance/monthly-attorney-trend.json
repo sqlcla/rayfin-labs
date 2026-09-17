@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Monthly attorney billed value trend.",
+  "width": "container",
+  "height": "container",
+  "mark": { "type": "line", "point": true },
+  "encoding": {
+    "x": { "field": "MonthStart", "type": "temporal", "title": "Month", "axis": { "format": "%b %Y" } },
+    "y": { "field": "BilledValue", "type": "quantitative", "title": "Billed value (dollars)", "axis": { "format": "$,.0f" } },
+    "tooltip": [
+      { "field": "MonthStart", "type": "temporal", "title": "Month", "format": "%B %Y" },
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" },
+      { "field": "TotalHours", "type": "quantitative", "title": "Total hours", "format": ",.0f" }
+    ]
+  }
+}

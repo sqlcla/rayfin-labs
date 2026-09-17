@@ -1,0 +1,20 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+SELECTCOLUMNS(
+    SUMMARIZECOLUMNS(
+        'matter'[matter_status],
+        'matter'[practice_area_name],
+        _AttorneyMatterFilter,
+        _ClientFilter,
+        "MatterCount", DISTINCTCOUNT('matter'[matter_key]),
+        "BilledValue", [Billed Value]
+    ),
+    "MatterStatus", 'matter'[matter_status],
+    "PracticeArea", 'matter'[practice_area_name],
+    "MatterCount", [MatterCount],
+    "BilledValue", [BilledValue]
+)
+ORDER BY [MatterCount] DESC, [MatterStatus], [PracticeArea]

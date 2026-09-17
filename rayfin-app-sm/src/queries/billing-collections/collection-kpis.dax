@@ -1,0 +1,34 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _InvoicedAmount =
+        CALCULATE(
+            SUM('invoice'[total_amount]),
+            _AttorneyMatterFilter,
+            _ClientFilter
+        )
+    VAR _PaidAmount =
+        CALCULATE(
+            SUM('invoice'[paid_amount]),
+            _AttorneyMatterFilter,
+            _ClientFilter
+        )
+
+EVALUATE
+ROW(
+    "InvoicedAmount", _InvoicedAmount,
+    "PaidAmount", _PaidAmount,
+    "OutstandingAmount",
+        CALCULATE(
+            SUM('invoice'[outstanding_amount]),
+            _AttorneyMatterFilter,
+            _ClientFilter
+        ),
+    "CollectionRate", DIVIDE(_PaidAmount, _InvoicedAmount),
+    "InvoiceCount",
+        CALCULATE(
+            DISTINCTCOUNT('invoice'[invoice_key]),
+            _AttorneyMatterFilter,
+            _ClientFilter
+        )
+)

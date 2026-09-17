@@ -1,0 +1,18 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Matter action detail ordered by outstanding amount.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "y": { "field": "MatterName", "type": "nominal", "title": "Matter", "sort": "-x" },
+    "x": { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount (dollars)", "axis": { "format": "$,.0f" } },
+    "color": { "field": "RiskLevel", "type": "nominal", "title": "Risk level" },
+    "tooltip": [
+      { "field": "ClientName", "type": "nominal", "title": "Client" },
+      { "field": "MatterStatus", "type": "nominal", "title": "Matter status" },
+      { "field": "RecommendedAction", "type": "nominal", "title": "Recommended action" },
+      { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount", "format": "$,.0f" }
+    ]
+  }
+}

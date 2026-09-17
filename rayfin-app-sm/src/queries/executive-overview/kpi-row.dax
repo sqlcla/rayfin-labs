@@ -1,0 +1,23 @@
+DEFINE
+    VAR _AttorneyFilter = ALL('attorney'[attorney_name]) /*__ATTORNEY_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+
+EVALUATE
+ROW(
+    "BilledValue", CALCULATE([Billed Value], _AttorneyFilter, _ClientFilter),
+    "TotalHours", CALCULATE([Total Hours], _AttorneyFilter, _ClientFilter),
+    "ActiveMatters",
+        CALCULATE(
+            DISTINCTCOUNT('matter'[matter_key]),
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            FILTER(ALL('matter'[matter_status]), 'matter'[matter_status] <> "Closed")
+        ),
+    "OutstandingAmount",
+        CALCULATE(
+            SUM('invoice'[outstanding_amount]),
+            _AttorneyMatterFilter,
+            _ClientFilter
+        )
+)

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Available attorney names for report filtering.",
+  "width": "container",
+  "height": "container",
+  "mark": { "type": "text", "align": "left" },
+  "encoding": {
+    "text": { "field": "AttorneyName", "type": "nominal", "title": "Attorney name" }
+  }
+}

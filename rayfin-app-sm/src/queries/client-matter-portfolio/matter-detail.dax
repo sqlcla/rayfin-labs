@@ -1,0 +1,45 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+TOPN(
+    250,
+    SELECTCOLUMNS(
+        SUMMARIZECOLUMNS(
+            'matter'[matter_id],
+            'matter'[matter_name],
+            'client'[client_name],
+            'matter'[matter_status],
+            'matter'[matter_type],
+            'matter'[practice_area_name],
+            'matter'[risk_level],
+            'matter'[jurisdiction_name],
+            'matter'[open_date],
+            'matter'[close_date],
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            "BilledValue", [Billed Value],
+            "InvoicedAmount", SUM('invoice'[total_amount]),
+            "PaidAmount", SUM('invoice'[paid_amount]),
+            "OutstandingAmount", SUM('invoice'[outstanding_amount])
+        ),
+        "MatterId", 'matter'[matter_id],
+        "MatterName", 'matter'[matter_name],
+        "ClientName", 'client'[client_name],
+        "MatterStatus", 'matter'[matter_status],
+        "MatterType", 'matter'[matter_type],
+        "PracticeArea", 'matter'[practice_area_name],
+        "RiskLevel", 'matter'[risk_level],
+        "Jurisdiction", 'matter'[jurisdiction_name],
+        "OpenDate", 'matter'[open_date],
+        "CloseDate", 'matter'[close_date],
+        "BilledValue", [BilledValue],
+        "InvoicedAmount", [InvoicedAmount],
+        "PaidAmount", [PaidAmount],
+        "OutstandingAmount", [OutstandingAmount]
+    ),
+    [BilledValue], DESC,
+    [MatterId], ASC
+)
+ORDER BY [BilledValue] DESC, [MatterId]

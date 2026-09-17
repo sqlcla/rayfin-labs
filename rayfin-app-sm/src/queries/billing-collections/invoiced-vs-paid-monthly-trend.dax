@@ -1,0 +1,35 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Daily =
+        SUMMARIZECOLUMNS(
+            'invoice'[invoice_date],
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            "InvoicedAmount", SUM('invoice'[total_amount]),
+            "PaidAmount", SUM('invoice'[paid_amount])
+        )
+    VAR _Monthly =
+        GROUPBY(
+            ADDCOLUMNS(
+                _Daily,
+                "MonthStart",
+                    DATE(
+                        YEAR('invoice'[invoice_date]),
+                        MONTH('invoice'[invoice_date]),
+                        1
+                    )
+            ),
+            [MonthStart],
+            "InvoicedAmount", SUMX(CURRENTGROUP(), [InvoicedAmount]),
+            "PaidAmount", SUMX(CURRENTGROUP(), [PaidAmount])
+        )
+
+EVALUATE
+SELECTCOLUMNS(
+    _Monthly,
+    "MonthStart", [MonthStart],
+    "InvoicedAmount", [InvoicedAmount],
+    "PaidAmount", [PaidAmount]
+)
+ORDER BY [MonthStart]

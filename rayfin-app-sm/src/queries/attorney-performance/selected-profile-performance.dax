@@ -1,0 +1,34 @@
+DEFINE
+    VAR _AttorneyFilter = ALL('attorney'[attorney_name]) /*__ATTORNEY_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+SELECTCOLUMNS(
+    SUMMARIZECOLUMNS(
+        'attorney'[attorney_id],
+        'attorney'[attorney_name],
+        'attorney'[title],
+        'attorney'[attorney_role],
+        'attorney'[office_name],
+        'attorney'[practice_area_name],
+        _AttorneyFilter,
+        _ClientFilter,
+        "BilledValue", [Billed Value],
+        "TotalHours", [Total Hours],
+        "UtilizationPercent", [Utilization %],
+        "EffectiveBillRate", [Effective Bill Rate],
+        "HoursVsTarget", [Hours vs Target]
+    ),
+    "AttorneyId", 'attorney'[attorney_id],
+    "AttorneyName", 'attorney'[attorney_name],
+    "Title", 'attorney'[title],
+    "AttorneyRole", 'attorney'[attorney_role],
+    "OfficeName", 'attorney'[office_name],
+    "PracticeArea", 'attorney'[practice_area_name],
+    "BilledValue", [BilledValue],
+    "TotalHours", [TotalHours],
+    "UtilizationPercent", [UtilizationPercent],
+    "EffectiveBillRate", [EffectiveBillRate],
+    "HoursVsTarget", [HoursVsTarget]
+)
+ORDER BY [AttorneyName]

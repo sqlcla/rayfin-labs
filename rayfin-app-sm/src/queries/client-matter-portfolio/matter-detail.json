@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Matter portfolio detail.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "y": { "field": "MatterName", "type": "nominal", "title": "Matter", "sort": "-x" },
+    "x": { "field": "BilledValue", "type": "quantitative", "title": "Billed value (dollars)", "axis": { "format": "$,.0f" } },
+    "color": { "field": "RiskLevel", "type": "nominal", "title": "Risk level" },
+    "tooltip": [
+      { "field": "ClientName", "type": "nominal", "title": "Client" },
+      { "field": "MatterStatus", "type": "nominal", "title": "Matter status" },
+      { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount", "format": "$,.0f" }
+    ]
+  }
+}

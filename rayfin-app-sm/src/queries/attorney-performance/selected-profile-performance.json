@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Selected attorney performance profile.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "y": { "field": "AttorneyName", "type": "nominal", "title": "Attorney" },
+    "x": { "field": "BilledValue", "type": "quantitative", "title": "Billed value (dollars)", "axis": { "format": "$,.0f" } },
+    "tooltip": [
+      { "field": "Title", "type": "nominal", "title": "Title" },
+      { "field": "OfficeName", "type": "nominal", "title": "Office" },
+      { "field": "UtilizationPercent", "type": "quantitative", "title": "Utilization", "format": ".0%" },
+      { "field": "EffectiveBillRate", "type": "quantitative", "title": "Effective bill rate", "format": "$,.0f" }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Executive key performance indicators.",
+  "width": "container",
+  "height": "container",
+  "mark": { "type": "text", "fontSize": 18, "fontWeight": "bold" },
+  "encoding": {
+    "text": { "field": "BilledValue", "type": "quantitative", "format": "$,.0f", "title": "Billed value" },
+    "tooltip": [
+      { "field": "BilledValue", "type": "quantitative", "title": "Billed value", "format": "$,.0f" },
+      { "field": "TotalHours", "type": "quantitative", "title": "Total hours", "format": ",.0f" },
+      { "field": "ActiveMatters", "type": "quantitative", "title": "Active matters", "format": ",.0f" },
+      { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount", "format": "$,.0f" }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        VALUES('attorney'[attorney_name]),
+        NOT ISBLANK('attorney'[attorney_name])
+            && CALCULATE(
+                COUNTROWS('attorney'),
+                'attorney'[is_active] = TRUE()
+            ) > 0
+    ),
+    "AttorneyName", 'attorney'[attorney_name]
+)
+ORDER BY [AttorneyName]

@@ -1,0 +1,35 @@
+DEFINE
+    VAR _AttorneyFilter = ALL('attorney'[attorney_name]) /*__ATTORNEY_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Daily =
+        SUMMARIZECOLUMNS(
+            'time_entry'[work_date],
+            _AttorneyFilter,
+            _ClientFilter,
+            "BilledValue", [Billed Value],
+            "TotalHours", [Total Hours]
+        )
+    VAR _Monthly =
+        GROUPBY(
+            ADDCOLUMNS(
+                _Daily,
+                "MonthStart",
+                    DATE(
+                        YEAR('time_entry'[work_date]),
+                        MONTH('time_entry'[work_date]),
+                        1
+                    )
+            ),
+            [MonthStart],
+            "BilledValue", SUMX(CURRENTGROUP(), [BilledValue]),
+            "TotalHours", SUMX(CURRENTGROUP(), [TotalHours])
+        )
+
+EVALUATE
+SELECTCOLUMNS(
+    _Monthly,
+    "MonthStart", [MonthStart],
+    "BilledValue", [BilledValue],
+    "TotalHours", [TotalHours]
+)
+ORDER BY [MonthStart]

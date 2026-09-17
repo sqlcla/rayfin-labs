@@ -1,0 +1,20 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+
+EVALUATE
+SELECTCOLUMNS(
+    SUMMARIZECOLUMNS(
+        'invoice'[invoice_status],
+        _AttorneyMatterFilter,
+        _ClientFilter,
+        "OutstandingAmount", SUM('invoice'[outstanding_amount]),
+        "InvoicedAmount", SUM('invoice'[total_amount]),
+        "InvoiceCount", DISTINCTCOUNT('invoice'[invoice_key])
+    ),
+    "InvoiceStatus", 'invoice'[invoice_status],
+    "OutstandingAmount", [OutstandingAmount],
+    "InvoicedAmount", [InvoicedAmount],
+    "InvoiceCount", [InvoiceCount]
+)
+ORDER BY [OutstandingAmount] DESC, [InvoiceStatus]

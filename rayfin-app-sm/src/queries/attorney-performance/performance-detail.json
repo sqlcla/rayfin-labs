@@ -1,0 +1,18 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Attorney time-entry performance detail.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "x": { "field": "WorkDate", "type": "temporal", "title": "Work date" },
+    "y": { "field": "BilledAmount", "type": "quantitative", "title": "Billed amount (dollars)", "axis": { "format": "$,.0f" } },
+    "tooltip": [
+      { "field": "AttorneyName", "type": "nominal", "title": "Attorney" },
+      { "field": "ClientName", "type": "nominal", "title": "Client" },
+      { "field": "MatterName", "type": "nominal", "title": "Matter" },
+      { "field": "HoursWorked", "type": "quantitative", "title": "Hours", "format": ",.0f" },
+      { "field": "BilledAmount", "type": "quantitative", "title": "Billed amount", "format": "$,.0f" }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+DEFINE
+    VAR _AttorneyMatterFilter = ALL('matter'[matter_key]) /*__ATTORNEY_MATTER_FILTER__*/
+    VAR _ClientFilter = ALL('client'[client_name]) /*__CLIENT_FILTER__*/
+    VAR _Core =
+        SUMMARIZECOLUMNS(
+            'matter'[matter_id],
+            'matter'[matter_name],
+            'client'[client_name],
+            'matter'[matter_status],
+            'matter'[risk_level],
+            'matter'[open_date],
+            _AttorneyMatterFilter,
+            _ClientFilter,
+            "BilledValue", [Billed Value],
+            "OutstandingAmount", SUM('invoice'[outstanding_amount])
+        )
+
+EVALUATE
+TOPN(
+    100,
+    SELECTCOLUMNS(
+        ADDCOLUMNS(
+            _Core,
+            "RecommendedAction",
+                SWITCH(
+                    TRUE(),
+                    'matter'[risk_level] = "High", "Review high-risk matter",
+                    [OutstandingAmount] > 0, "Follow up on outstanding balance",
+                    'matter'[matter_status] = "Open", "Monitor active matter",
+                    "No immediate action"
+                )
+        ),
+        "MatterId", 'matter'[matter_id],
+        "MatterName", 'matter'[matter_name],
+        "ClientName", 'client'[client_name],
+        "MatterStatus", 'matter'[matter_status],
+        "RiskLevel", 'matter'[risk_level],
+        "OpenDate", 'matter'[open_date],
+        "BilledValue", [BilledValue],
+        "OutstandingAmount", [OutstandingAmount],
+        "RecommendedAction", [RecommendedAction]
+    ),
+    [OutstandingAmount], DESC,
+    [MatterId], ASC
+)
+ORDER BY [OutstandingAmount] DESC, [MatterId]

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Outstanding invoice amount by status.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "x": { "field": "InvoiceStatus", "type": "nominal", "title": "Invoice status" },
+    "y": { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount (dollars)", "axis": { "format": "$,.0f" } },
+    "tooltip": [
+      { "field": "InvoicedAmount", "type": "quantitative", "title": "Invoiced amount", "format": "$,.0f" },
+      { "field": "InvoiceCount", "type": "quantitative", "title": "Invoices", "format": ",.0f" }
+    ]
+  }
+}

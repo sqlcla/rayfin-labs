@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Invoice billing and collection detail.",
+  "width": "container",
+  "height": "container",
+  "mark": "bar",
+  "encoding": {
+    "x": { "field": "InvoiceDate", "type": "temporal", "title": "Invoice date" },
+    "y": { "field": "OutstandingAmount", "type": "quantitative", "title": "Outstanding amount (dollars)", "axis": { "format": "$,.0f" } },
+    "color": { "field": "InvoiceStatus", "type": "nominal", "title": "Invoice status" },
+    "tooltip": [
+      { "field": "InvoiceId", "type": "nominal", "title": "Invoice ID" },
+      { "field": "ClientName", "type": "nominal", "title": "Client" },
+      { "field": "MatterName", "type": "nominal", "title": "Matter" },
+      { "field": "InvoicedAmount", "type": "quantitative", "title": "Invoiced amount", "format": "$,.0f" },
+      { "field": "PaidAmount", "type": "quantitative", "title": "Paid amount", "format": "$,.0f" }
+    ]
+  }
+}

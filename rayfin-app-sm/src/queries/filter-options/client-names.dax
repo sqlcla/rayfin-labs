@@ -1,0 +1,13 @@
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        VALUES('client'[client_name]),
+        NOT ISBLANK('client'[client_name])
+            && CALCULATE(
+                COUNTROWS('client'),
+                'client'[is_active] = TRUE()
+            ) > 0
+    ),
+    "ClientName", 'client'[client_name]
+)
+ORDER BY [ClientName]
